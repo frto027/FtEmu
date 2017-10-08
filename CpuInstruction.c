@@ -132,7 +132,7 @@ uint8_t addr_byte[] = {
  * 1.一个函数，输入void，返回int为周期标准周期偏移
  * 2.cpu_ins_init_assistent列表中加入函数说明，操作码，函数，类型必须ADDR_IMPLICT，周期为标准周期
  * 其他指令：
- * 1.一个函数，输入uint8_t为操作值，返回int为周期标准周期偏移
+ * 1.一个函数，开头写宏NEED_MEM，然后输入变量是mem，返回int为周期标准周期偏移
  * 2.cpu_ins_init_assistent列表中加入函数说明，操作码，函数，类型，周期为标准周期
  * 3.如果要修改操作数，所代表的位置，直接调用ChangeFunc指针指向的函数，传入新的数值即可。
  * 4.如果有必要(如JMP)，检查changeOpAddr，这是操作数的地址
