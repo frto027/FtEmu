@@ -13,18 +13,15 @@ SOURCES += \
     CpuEmulate.c \
     CpuInstruction.c \
     PpuEmulate.c \
-    NesParser.c
+    NesParser.c \
+    globalclocks.c
 
 #LIBS += -L$$PWD/lib-mingw-w64/ -lglfw3dll
 #LIBS += -lopengl32
 #INCLUDEPATH += $$PWD/GLFW
 #DEPENDPATH += $$PWD/GLFW
 
-LIBS += -lGL
-LIBS += -lGLU
-LIBS += -lglut
-LIBS += -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
-LIBS += -lglfw3
+unix:LIBS += -lGL -lGLU -lglut -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor -lglfw3
 
 HEADERS += \
     GlobalDefine.h \
@@ -36,6 +33,16 @@ HEADERS += \
     CpuEmulate.h \
     CpuInstruction.h \
     NesParser.h \
-    PpuEmulate.h
+    PpuEmulate.h \
+    globalclocks.h
 
 DISTFILES +=
+
+win32: LIBS += -lopengl32
+win32: LIBS += -L$$PWD/../../thing/openGL/glfw-3.2.1.bin.WIN32/glfw-3.2.1.bin.WIN32/lib-mingw/ -lglfw3dll
+
+INCLUDEPATH += $$PWD/../../thing/openGL/glfw-3.2.1.bin.WIN32/glfw-3.2.1.bin.WIN32/lib-mingw
+DEPENDPATH += $$PWD/../../thing/openGL/glfw-3.2.1.bin.WIN32/glfw-3.2.1.bin.WIN32/lib-mingw
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../thing/openGL/glfw-3.2.1.bin.WIN32/glfw-3.2.1.bin.WIN32/lib-mingw/glfw3dll.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/../../thing/openGL/glfw-3.2.1.bin.WIN32/glfw-3.2.1.bin.WIN32/lib-mingw/libglfw3dll.a
