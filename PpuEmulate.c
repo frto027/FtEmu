@@ -97,6 +97,10 @@ void ppu_dma(uint8_t pageindex){
 }
 int ppu_nextcycle = 0;
 void ppu_cycle(){
+    if(ppu_nextcycle){
+        ppu_nextcycle--;
+        return;
+    }
     ppu_nextcycle = 500;
     cpu_memory[PPU_REG_PPUSTATUS]|= 1<<7;
     /* debug only */
@@ -110,17 +114,4 @@ void ppu_cycle(){
     if((cpu_memory[PPU_REG_PPUCTRL]>>7)&1){
         cpu_interrupt(CPU_INTERRUPT_NMI);
     }
-}
-
-void ppu_update(){
-    static clock_t last = 0;
-    if(clock() - last < 10){
-        return;
-    }
-    last = clock();
-    if(ppu_nextcycle){
-        ppu_nextcycle--;
-        return;
-    }
-    ppu_cycle();
 }

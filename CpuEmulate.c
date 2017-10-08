@@ -228,29 +228,6 @@ void cpu_cycle(){
     cycle_remain = cpu_instruction_table[opcode].cycles + cpu_instruction_table[opcode].doOp(instructionBuff);
 }
 
-//保证一定周期内需要被调用
-void cpu_update(){
-    //限制时间调用cpu_cycle:
-    /**********************/
-    static clock_t lasttick = 0;
-    static int singleTime = CPU_FREQUENC/CLOCKS_PER_SEC;
-
-    //函数内部需要保证周期同步，是否调用、调用几次cpu_cycle取决于系统时间
-    if(lasttick != clock()){
-        lasttick = clock();
-        for(int i=0;i<singleTime;i++)
-            cpu_cycle();
-    }
-    /***********************/
-/*
-    while(cpu_runningtime < clock()){
-        cpu_cycle();
-        cpu_runningtime += CLOCKS_PER_SEC/CPU_FREQUENC;
-    }
-    */
-    //printf("over");
-}
-
 void cpu_flag_set(uint8_t flag){
     cpu_r_p |= flag;
 }

@@ -16,8 +16,8 @@
 #define COLOR_COUNT 0x40
 
 #define FPS_LIMIT 60
-//cpu时钟频率 单位Hz
-#define CPU_FREQUENC 21477272
+//系统时钟频率 单位Hz
+#define SYSTEM_FREQUENCE 21477272
 
 extern int nes_loaded;
 

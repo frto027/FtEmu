@@ -15,6 +15,7 @@
 #include "TestDisplay.h"
 #include "TestJoystickDisplay.h"
 
+#include "GlobalClocks.h"
 
 void error_callback(int error, const char* description)
 {
@@ -32,7 +33,8 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
         }
         if(key == GLFW_KEY_O){
 //            ParseNesFile("F:\\tutor.nes");
-            ParseNesFile("/home/frto027/Things/Mario.nes");
+//            ParseNesFile("/home/frto027/Things/Mario.nes");
+            ParseNesFile("F:\\Mario.nes");
 //            ParseNesFile("/home/frto027/Downloads/nestest.nes");
         }
         if(key == GLFW_KEY_D){
@@ -70,7 +72,7 @@ void draw(GLFWwindow * window){
 char title[1024]="Emulator";
 char * titleapp;
 
-void ShowFps(GLFWwindow * window){
+void ShowIps(GLFWwindow * window){
     static int count = 0;
     static time_t lasttime = 0;
     time_t nowtime = time(NULL);
@@ -119,19 +121,15 @@ int main()
         //绘图
 
         draw(window);
-
-
         //调整大小
         //WindowResize();
         //处理事件
         glfwPollEvents();
-
-        //统计Fps
-        ShowFps(window);
+        //统计Ips
+        ShowIps(window);
         //处理cpu
         if(nes_loaded){
-            cpu_update();
-            ppu_update();
+            clocks_update();
         }
         //usleep(1);
     }

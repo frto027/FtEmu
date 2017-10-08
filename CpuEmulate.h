@@ -11,7 +11,7 @@ extern clock_t cpu_runningtime;
 
 uint8_t cpu_read(uint16_t address);
 void cpu_write(uint16_t address,uint8_t value);
-void cpu_update();//务必时刻调用
+
 #define CPU_ADDR_PRG_L_BEG 0x8000
 #define CPU_ADDR_PRG_H_BEG 0xC000
 #define CPU_ADDR_PRG_LEN 0x4000
@@ -58,5 +58,7 @@ void cpu_flag_change(uint8_t flag,int istrue);//直接设置标志位为布尔�
 
 void cpu_stack_push(uint8_t data);
 uint8_t cpu_stack_pop();
+
+void cpu_cycle();
 
 #endif // CPUEMULATE_H

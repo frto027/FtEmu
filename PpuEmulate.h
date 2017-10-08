@@ -50,6 +50,8 @@ void ppu_dma(uint8_t pageindex);
 //返回palette某索引的颜色索引
 uint8_t ppu_palette_color(uint8_t palette,uint8_t index);
 
-void ppu_update();
+void ppu_cycle();
+
+#define PPU_FREQUENC (CPU_FREQUENC/4)
 
 #endif // PPUEMULATE_H
