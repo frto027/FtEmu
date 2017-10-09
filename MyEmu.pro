@@ -14,7 +14,7 @@ SOURCES += \
     CpuInstruction.c \
     PpuEmulate.c \
     NesParser.c \
-    globalclocks.c
+    GlobalClocks.c
 
 #LIBS += -L$$PWD/lib-mingw-w64/ -lglfw3dll
 #LIBS += -lopengl32
@@ -34,7 +34,7 @@ HEADERS += \
     CpuInstruction.h \
     NesParser.h \
     PpuEmulate.h \
-    globalclocks.h
+    GlobalClocks.h
 
 DISTFILES +=
 

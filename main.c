@@ -33,8 +33,8 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
         }
         if(key == GLFW_KEY_O){
 //            ParseNesFile("F:\\tutor.nes");
-//            ParseNesFile("/home/frto027/Things/Mario.nes");
-            ParseNesFile("F:\\Mario.nes");
+            ParseNesFile("/home/frto027/Things/Mario.nes");
+//            ParseNesFile("F:\\Mario.nes");
 //            ParseNesFile("/home/frto027/Downloads/nestest.nes");
         }
         if(key == GLFW_KEY_D){
