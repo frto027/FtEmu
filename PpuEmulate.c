@@ -129,3 +129,7 @@ int ppu_update(int count){
     }
     return ppu_cycle_remain + 1;
 }
+//将colorarr填充当前ppu需要显示的颜色索引，行优先存储，会被BlockDisplay调用
+void ppu_putcolor(uint8_t colorarr[ORI_HEIGHT*ORI_WIDTH]){
+
+}

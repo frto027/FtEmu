@@ -542,7 +542,6 @@ struct{
     int addr_mode;
     int cycles;
 }cpu_ins_init_assistent[]={
-    // 注意这个列表如果是ADDR_IMPLICT类型寻址，则必须传入uint8_t (*)(void) 否则传入 uint8_t (*)(uint8 op)
 {0x69,i_adc,ADDR_IMMEDIATE,2},
 {0x65,i_adc,ADDR_ZEROPAGE,3},
 {0x75,i_adc,ADDR_ZEROPAGEX,4},

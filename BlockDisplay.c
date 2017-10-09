@@ -124,11 +124,6 @@ void showPalette(int x,int y){
         x+=step + 1;
     }
 }
-
-//把ppu数据解析到colorpoint
-void showPPU(int x,int y){
-
-}
 //FPS统计+显示
 void ShowFpsInGame(){
     static char tip[30] = "Fps ";
@@ -198,6 +193,7 @@ void PatternToArray(uint16_t pattern_addr,uint16_t paletteTable,uint8_t index,ui
     }
 }
 
+//非线程安全(方法只读)
 void ShowNameTable1(){
 
     for(int y=0;y<30;y++){
@@ -216,12 +212,14 @@ void ShowNameTable1(){
 void BlockDisplay(){
     clearColor();
     //randData();
-    //ShowNameTable1();
+
+    ShowNameTable1();// !
+
+    ppu_putcolor(colorBuffer);
     DrawColorPoint();
 
     //showPatternTable(0,0);//在屏幕上叠加显示PatternTable
-    showPalette(0,200);
-
+    showPalette(0,200);//多线程没加锁，仅供调试，只读
 
     ShowTip();//显示一段话
     ShowFpsInGame();//画面显示Fps

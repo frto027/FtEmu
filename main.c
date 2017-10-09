@@ -17,6 +17,8 @@
 
 #include "GlobalClocks.h"
 
+#include <pthread.h>
+
 void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error %d: %s\n",error, description);
@@ -32,22 +34,28 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
             ScreenTip("m Pressed",1);
         }
         if(key == GLFW_KEY_O){
+            pthread_mutex_lock(&clock_mutex);
+
 //            ParseNesFile("F:\\tutor.nes");
 //            ParseNesFile("/home/frto027/Things/Mario.nes");
             ParseNesFile("F:\\Mario.nes");
 //            ParseNesFile("/home/frto027/Downloads/nestest.nes");
+
+            pthread_mutex_unlock(&clock_mutex);
         }
         if(key == GLFW_KEY_D){
             for(uint16_t i=0x3F00;i<0x3F20;i++){
                 printf("%04X:%X\n",i,ppu_read(i));
             }
         }
+        /*
         if(key == GLFW_KEY_S){
             cpu_memory[PPU_REG_PPUSTATUS]|= 1 << 6;
         }
         if(key == GLFW_KEY_U){
             cpu_memory[PPU_REG_PPUSTATUS]&= ~(1 << 6);
         }
+        */
     }
     if(key == GLFW_KEY_N){
         cpu_memory[PPU_REG_PPUCTRL]|= 1 << 7;
@@ -57,9 +65,6 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
 
 void draw(GLFWwindow * window){
     static double lasttick = 0;
-
-    if(clocks_cpu_busy())
-        return;
 
     double thistick = glfwGetTime();
 
@@ -122,6 +127,19 @@ int main()
     glfwSetWindowSizeCallback(window,WindowResize);
     glfwSetWindowSize(window,ORI_WIDTH*2,ORI_HEIGHT*2);
 
+    //开启线程负责cpu计算
+    pthread_t clocks_thread;
+    {
+        int err =
+        pthread_create(&clocks_thread,NULL,clocks_update_main,NULL);
+        if(err){
+            fprintf(stderr,"thread create failed:%d\n",err);
+            exit(-1);
+        }
+        pthread_mutex_init(&clock_mutex,NULL);
+    }
+
+
     while(!glfwWindowShouldClose(window)){
         //主循环
         //绘图
@@ -130,13 +148,17 @@ int main()
         glfwPollEvents();
         //统计Ips
         //ShowIps(window);
-        //处理cpu
-        if(nes_loaded){
-            clocks_update();
-        }
     }
+
     glfwDestroyWindow(window);
 
+    printf("waiting for clock thread %d end...\n",clocks_thread);
+    clocks_stop();
+    pthread_join(clocks_thread,NULL);
+    printf("end.");
+
     glfwTerminate();
+
+
     return 0;
 }

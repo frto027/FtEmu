@@ -139,8 +139,6 @@ void ParseNesFile(const char * filepath){
 
     initCPU();
 
-    clocks_flushtime();
-
     nes_loaded = 1;
 
 
