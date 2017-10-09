@@ -99,19 +99,13 @@ void showPatternTable(int x,int y){
         x+=9;
     }
 }
-//获取某个调色板中的某个颜色
-uint8_t getPaletteColor(uint16_t pattle,uint8_t colorindex){
-    if(colorindex % 4 == 0)
-        colorindex = 0;
-    return ppu_read(pattle + colorindex) & 0x3F;
-}
 
 //显示Palette
 void showPalette(int x,int y){
     int xorg = x;
     int step = 8;
     for(int i=0;i<16;i++){
-        int color = getPaletteColor(PPU_PALETTE_IMAGE,i);//palette只有低6位有效
+        int color = ppu_palette_color(PPU_PALETTE_IMAGE,i);//palette只有低6位有效
         for(int xo=0;xo<step;xo++)
             for(int yo=0;yo<step;yo++){
                 SET(x+xo,y+yo,color);
@@ -121,7 +115,7 @@ void showPalette(int x,int y){
     x = xorg;
     y += step + 1;
     for(int i=0;i<16;i++){
-        int color = getPaletteColor(PPU_PALETTE_SPRITE,i);//palette只有低6位有效
+        int color = ppu_palette_color(PPU_PALETTE_SPRITE,i);//palette只有低6位有效
         for(int xo=0;xo<step;xo++)
             for(int yo=0;yo<step;yo++){
                 SET(x+xo,y+yo,color);
@@ -198,7 +192,7 @@ void PatternToArray(uint16_t pattern_addr,uint16_t paletteTable,uint8_t index,ui
         for(int x = begx;x<begx+8;x++){
             uint8_t color = ((table[y - begy]>>(7-(x-begx))) + ((table[y - begy + 8]>>(7-(x-begx)))<<1))&0x03;
             //if(color != 0)
-                arr[y * linewidth + x]= getPaletteColor(paletteTable,color | heighcolor);
+                arr[y * linewidth + x]= ppu_palette_color(paletteTable,color | heighcolor);
         }
     }
 }
@@ -223,7 +217,6 @@ void BlockDisplay(){
     //randData();
     ShowNameTable1();
     DrawColorPoint();
-
 
     //showPatternTable(0,0);//在屏幕上叠加显示PatternTable
     showPalette(0,200);

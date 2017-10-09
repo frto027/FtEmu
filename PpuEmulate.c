@@ -45,8 +45,10 @@ void ppu_oam_write(uint8_t addr,uint8_t value){
     ppu_spr_ram[addr]=value;
 }
 
-uint8_t ppu_palette_color(uint8_t palette,uint8_t index){
-    return ppu_memory[palette + index]&0x3F;
+uint8_t ppu_palette_color(uint16_t palette,uint8_t index){
+    if(index % 4 == 0)
+        index = 0;
+    return ppu_read(palette + index)&0x3F;
 }
 
 void ppu_regw_scroll(uint8_t value){

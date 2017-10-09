@@ -48,9 +48,11 @@ void ppu_dma(uint8_t pageindex);
 #define PPU_REG_PPUDATA     0x2007
 #define PPU_REG_OAMDMA      0x4014
 //返回palette某索引的颜色索引
-uint8_t ppu_palette_color(uint8_t palette,uint8_t index);
+uint8_t ppu_palette_color(uint16_t palette,uint8_t index);
 
 void ppu_cycle();
+//计算ppu当前显示的颜色，然后填充到colorarr[]中
+void ppu_putcolor(uint8_t colorarr[ORI_HEIGHT*ORI_WIDTH]);
 
 #define PPU_FREQUENC (CPU_FREQUENC/4)
 
