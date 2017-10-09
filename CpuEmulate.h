@@ -58,7 +58,7 @@ void cpu_flag_change(uint8_t flag,int istrue);//直接设置标志位为布尔�
 
 void cpu_stack_push(uint8_t data);
 uint8_t cpu_stack_pop();
-
-void cpu_cycle();
+//更新cpu若干个周期，返回值是建议下次传入的数值
+int cpu_update(int count);
 
 #endif // CPUEMULATE_H

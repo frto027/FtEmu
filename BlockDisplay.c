@@ -2,6 +2,7 @@
 #include "GlobalDefine.h"
 #include "bmpfont.h"
 #include "GL/gl.h"
+#include "GLFW/glfw3.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -133,8 +134,8 @@ void ShowFpsInGame(){
     static char tip[30] = "Fps ";
     static char * flg = tip + 4;
     static int count = 0;
-    static time_t lasttime = 0;
-    time_t nowtime = time(NULL);
+    static int lasttime = 0;
+    int nowtime = (int)glfwGetTime();
     if(nowtime != lasttime){
         sprintf(flg,"%d",count);
         lasttime = nowtime;
@@ -215,7 +216,7 @@ void ShowNameTable1(){
 void BlockDisplay(){
     clearColor();
     //randData();
-    ShowNameTable1();
+    //ShowNameTable1();
     DrawColorPoint();
 
     //showPatternTable(0,0);//在屏幕上叠加显示PatternTable

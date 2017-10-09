@@ -97,13 +97,13 @@ void ppu_dma(uint8_t pageindex){
         ppu_spr_ram[i]=cpu_read(j);
     }
 }
-int ppu_nextcycle = 0;
+int ppu_cycle_remain = 0;
 void ppu_cycle(){
-    if(ppu_nextcycle){
-        ppu_nextcycle--;
+    if(ppu_cycle_remain){
+        ppu_cycle_remain--;
         return;
     }
-    ppu_nextcycle = 500;
+    ppu_cycle_remain = 500;
     cpu_memory[PPU_REG_PPUSTATUS]|= 1<<7;
     /* debug only */
     static int set = 1;
@@ -116,4 +116,16 @@ void ppu_cycle(){
     if((cpu_memory[PPU_REG_PPUCTRL]>>7)&1){
         cpu_interrupt(CPU_INTERRUPT_NMI);
     }
+}
+
+int ppu_update(int count){
+    if(ppu_cycle_remain >= count){
+        ppu_cycle_remain -= count;
+    }else{
+        count -= ppu_cycle_remain;
+        ppu_cycle_remain = 0;
+        for(int i=0;i<count;i++)
+            ppu_cycle();
+    }
+    return ppu_cycle_remain + 1;
 }

@@ -228,6 +228,18 @@ void cpu_cycle(){
     cycle_remain = cpu_instruction_table[opcode].cycles + cpu_instruction_table[opcode].doOp(instructionBuff);
 }
 
+int cpu_update(int count){
+    if(cycle_remain >= count){
+        cycle_remain -= count;
+    }else{
+        count -= cycle_remain;
+        cycle_remain = 0;
+        for(int i=0;i<count;i++)
+            cpu_cycle();
+    }
+    return cycle_remain + 1;
+}
+
 void cpu_flag_set(uint8_t flag){
     cpu_r_p |= flag;
 }

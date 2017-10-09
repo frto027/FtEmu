@@ -33,8 +33,8 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
         }
         if(key == GLFW_KEY_O){
 //            ParseNesFile("F:\\tutor.nes");
-            ParseNesFile("/home/frto027/Things/Mario.nes");
-//            ParseNesFile("F:\\Mario.nes");
+//            ParseNesFile("/home/frto027/Things/Mario.nes");
+            ParseNesFile("F:\\Mario.nes");
 //            ParseNesFile("/home/frto027/Downloads/nestest.nes");
         }
         if(key == GLFW_KEY_D){
@@ -56,17 +56,21 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 
 void draw(GLFWwindow * window){
-    static int maxtime = CLOCKS_PER_SEC/FPS_LIMIT;
-    static clock_t lasttick = 0;
-    clock_t tktime = clock();
-    if(tktime - lasttick < maxtime)
+    static double lasttick = 0;
+
+    if(clocks_cpu_busy())
         return;
-    lasttick = tktime;
+
+    double thistick = glfwGetTime();
+
+    if((thistick - lasttick)*FPS_LIMIT < 1){
+        return;
+    }
+    lasttick = thistick;
     glClear(GL_COLOR_BUFFER_BIT);
     BlockDisplay();
 //    TestJoystickDisplay(GLFW_JOYSTICK_1);
     glfwSwapBuffers(window);
-
 }
 
 char title[1024]="Emulator";
@@ -74,8 +78,8 @@ char * titleapp;
 
 void ShowIps(GLFWwindow * window){
     static int count = 0;
-    static time_t lasttime = 0;
-    time_t nowtime = time(NULL);
+    static int lasttime = 0;
+    int nowtime = (int)glfwGetTime();
     if(nowtime != lasttime){
         sprintf(titleapp," Ips:%d",(int)count);
         glfwSetWindowTitle(window,title);
@@ -91,7 +95,9 @@ void WindowResize(GLFWwindow * window,int w,int h){
 }
 
 
-
+void logtime(int i){
+    printf("time % 2d %lf\n",i,glfwGetTime());
+}
 
 int main()
 {
@@ -119,19 +125,15 @@ int main()
     while(!glfwWindowShouldClose(window)){
         //主循环
         //绘图
-
         draw(window);
-        //调整大小
-        //WindowResize();
         //处理事件
         glfwPollEvents();
         //统计Ips
-        ShowIps(window);
+        //ShowIps(window);
         //处理cpu
         if(nes_loaded){
             clocks_update();
         }
-        //usleep(1);
     }
     glfwDestroyWindow(window);
 

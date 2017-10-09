@@ -9,6 +9,8 @@
 
 #include "CpuInstruction.h"
 
+#include "GlobalClocks.h"
+
 struct RomHead rom_head;
 uint8_t mem_trainer[512];
 uint8_t (*mem_prg_rom)[0x4000];
@@ -137,7 +139,11 @@ void ParseNesFile(const char * filepath){
 
     initCPU();
 
+    clocks_flushtime();
+
     nes_loaded = 1;
+
+
     return;
 }
 void UnloadNes(){

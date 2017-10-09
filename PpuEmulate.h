@@ -49,8 +49,9 @@ void ppu_dma(uint8_t pageindex);
 #define PPU_REG_OAMDMA      0x4014
 //返回palette某索引的颜色索引
 uint8_t ppu_palette_color(uint16_t palette,uint8_t index);
+//更新count个时钟周期，返回值是下次建议传入的时钟周期
+int ppu_update(int count);
 
-void ppu_cycle();
 //计算ppu当前显示的颜色，然后填充到colorarr[]中
 void ppu_putcolor(uint8_t colorarr[ORI_HEIGHT*ORI_WIDTH]);
 
