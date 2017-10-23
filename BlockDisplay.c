@@ -187,8 +187,7 @@ void PatternToArray(uint16_t pattern_addr,uint16_t paletteTable,uint8_t index,ui
     for(int y = begy;y<begy+8;y++){
         for(int x = begx;x<begx+8;x++){
             uint8_t color = ((table[y - begy]>>(7-(x-begx))) + ((table[y - begy + 8]>>(7-(x-begx)))<<1))&0x03;
-            //if(color != 0)
-                arr[y * linewidth + x]= ppu_palette_color(paletteTable,color | heighcolor);
+            arr[y * linewidth + x]= ppu_palette_color(paletteTable,color | heighcolor);
         }
     }
 }
@@ -199,8 +198,7 @@ void ShowNameTable1(){
     for(int y=0;y<30;y++){
         for(int x=0;x<32;x++){
             uint16_t attr_offset = (y/4)*8 + x/4;
-            int attr_rbit = ((((
-                                   (y/2))&0x01)<<1)+((((x/2))&0x01)))*2;
+            int attr_rbit = ((((x/2)%2)<<1)|((y/2)%2))*2;
             //int attr_index =((((y / 16)<<1)+(x/16))<<4)+(attr_indexarr[(x / 8) + (y / 8)*4]);
             PatternToArray(PPU_ADDR_PATTERN_TABLE_1,PPU_PALETTE_IMAGE,ppu_memory[PPU_ADDR_NAME_TABLE_0 + y * 32 + x],colorBuffer,x*8,y*8,ORI_WIDTH ,
                     ((ppu_memory[PPU_ADDR_ATTR_TABLE_0 + attr_offset]>>attr_rbit)&0x03) << 2);

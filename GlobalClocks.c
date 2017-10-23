@@ -25,17 +25,25 @@ int clocks_cycle(int nextcycle){
 }
 
 void delay(double time){
-    double begt = glfwGetTime();
-    while(!stopsignal && glfwGetTime() - begt < time)
-        continue;
+
+    static struct timespec waitblock = {0,1};
+    waitblock.tv_sec = (time_t)time;
+    waitblock.tv_nsec =(long)((time - (int)time)*1000000);
+    pthread_delay_np(&waitblock);
+
+//    double begt = glfwGetTime();
+//    while(!stopsignal && glfwGetTime() - begt < time)
+//        pthread_delay_np(&waitblock);
 }
 //clocks线程主函数
 void * clocks_update_main(void * a){
     UNUSED(a);
     int nextup = 4;
     while(!stopsignal){
-        if(!nes_loaded)
+        if(!nes_loaded){
+            delay(1);
             continue;
+        }
         delay(nextup/(double)SYSTEM_FREQUENCE);
 
         pthread_mutex_lock(&clock_mutex);

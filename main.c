@@ -48,6 +48,11 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods
                 printf("%04X:%X\n",i,ppu_read(i));
             }
         }
+        if(key == GLFW_KEY_S){
+            FILE* f = fopen("D:\\ppuout.bin","w");
+            fwrite(ppu_memory,sizeof(*ppu_memory),sizeof(ppu_memory)/sizeof(*ppu_memory),f);
+            fclose(f);
+        }
         /*
         if(key == GLFW_KEY_S){
             cpu_memory[PPU_REG_PPUSTATUS]|= 1 << 6;

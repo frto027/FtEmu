@@ -64,7 +64,18 @@ void ppu_regw_scroll(uint8_t value){
 }
 void ppu_regw_address(uint8_t addr){
     static int haveold = 0;
+
+//    if(haveold){
+//        ppu_value_address &= 0xFF00;
+//        ppu_value_address |= addr;
+//    }else{
+//        ppu_value_address &= 0xFF;
+//        ppu_value_address |= ((uint16_t)addr)<<8;
+//    }
+//    haveold = !haveold;
+
     static uint8_t old = 0;
+
     if(haveold){
         ppu_value_address = (((uint16_t)old << 8)&0xFF00)+addr;
         haveold = 0;
@@ -85,8 +96,9 @@ void ppu_regw_data(uint8_t value){
     ppu_regrw_add();
 }
 uint8_t ppu_regr_data(){
-    return ppu_read(ppu_value_address);
+    uint8_t ret = ppu_read(ppu_value_address);
     ppu_regrw_add();
+    return ret;
 }
 
 //DMA直接寻址
@@ -103,7 +115,7 @@ void ppu_cycle(){
         ppu_cycle_remain--;
         return;
     }
-    ppu_cycle_remain = 500;
+    ppu_cycle_remain = 20000;
     cpu_memory[PPU_REG_PPUSTATUS]|= 1<<7;
     /* debug only */
     static int set = 1;
